@@ -43,6 +43,13 @@ jobs:
             --dist "$RUNNER_TEMP/dist" \
             --state state/latest.json \
             --github-output "$GITHUB_OUTPUT"
+      - name: Save installable plugin as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mattpocock-skills-chatgpt-v${{ steps.build.outputs.version }}
+          path: ${{ steps.build.outputs.archive }}
+          if-no-files-found: error
+          retention-days: 7
       - name: Publish release using exact upstream version
         if: steps.build.outputs.changed == 'true'
         shell: bash
